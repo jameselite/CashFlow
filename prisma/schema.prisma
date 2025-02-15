@@ -12,4 +12,8 @@ model User {
   email    String @unique
   fullname String
   password String
+  verifyed Boolean @default(false)
+  verify_code String @unique
+  created_at String
+  updated_at String
 }
