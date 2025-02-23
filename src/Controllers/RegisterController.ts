@@ -1,4 +1,4 @@
-import { RegisterService, type ErrorType } from "../Services/AddUserService";
+import { RegisterService } from "../Services/AddUserService";
 import type { Request, Response } from "express";
 
 export const RegisterController = async (req: Request, res: Response): Promise<void> => {
@@ -6,7 +6,7 @@ export const RegisterController = async (req: Request, res: Response): Promise<v
 
         const { fullname, email, password } = req.body;
 
-        const user : string | ErrorType = await RegisterService(fullname, email, password);
+        const user : string = await RegisterService(fullname, email, password);
 
         console.log(user);
         

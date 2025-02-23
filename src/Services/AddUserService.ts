@@ -11,12 +11,7 @@ export type User = {
   id: number;
 };
 
-export type ErrorType = {
-  error: string;
-};
-
-
-export const RegisterService = async (fullname: string, email: string, password: string): Promise<string | ErrorType> => {
+export const RegisterService = async (fullname: string, email: string, password: string): Promise<string> => {
 
   try {
     Validation.ValidateUser(fullname, email, password);
@@ -53,7 +48,7 @@ export const RegisterService = async (fullname: string, email: string, password:
       debug: true
     })
 
-    const verificationlink: string = `http://localhost:3000/verifyaccount?token=${verifycode}&user=${email}`;
+    const verificationlink: string = `http://localhost:3000/api/auth/verifyaccount?token=${verifycode}&user=${email}`;
 
     const mailoptions: object = {
       from: process.env.EMAILSENDER,
@@ -85,9 +80,7 @@ export const RegisterService = async (fullname: string, email: string, password:
     return "Great! we sent a link to your email address, please click on it to verify your account.";
 
   } catch (err: any) {
-    const error: ErrorType = { error: err.message };
-    console.log(error);
-    return error;
+    throw new Error(err.message);
   }
 
 };
