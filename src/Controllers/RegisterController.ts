@@ -1,4 +1,4 @@
-import { RegisterService, type ErrorType, type User } from "../Services/AddUserService";
+import { RegisterService, type ErrorType } from "../Services/AddUserService";
 import type { Request, Response } from "express";
 
 export const RegisterController = async (req: Request, res: Response): Promise<void> => {
@@ -8,6 +8,8 @@ export const RegisterController = async (req: Request, res: Response): Promise<v
 
         const user : string | ErrorType = await RegisterService(fullname, email, password);
 
+        console.log(user);
+        
         res.status(201).json({ message: user });
     } catch (err: any) {
         res.status(400).json({ error: err.message });

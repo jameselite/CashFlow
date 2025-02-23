@@ -8,13 +8,16 @@ import { NowTime } from "../Utils/NowTime";
 export type User = {
   email: string;
   fullname: string;
+  id: number;
 };
 
 export type ErrorType = {
   error: string;
 };
 
+
 export const RegisterService = async (fullname: string, email: string, password: string): Promise<string | ErrorType> => {
+
   try {
     Validation.ValidateUser(fullname, email, password);
 
@@ -37,6 +40,35 @@ export const RegisterService = async (fullname: string, email: string, password:
 
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAILSENDER,
+        pass: process.env.EMAILSENDERPASS
+      },
+      logger: true,
+      debug: true
+    })
+
+    const verificationlink: string = `http://localhost:3000/verifyaccount?token=${verifycode}&user=${email}`;
+
+    const mailoptions: object = {
+      from: process.env.EMAILSENDER,
+      to: email,
+      subject: 'Verify your email please !',
+      html: `
+        <p>Hello ${email},</p>
+        <p>Welcome to our website!</p>
+        <p>Please <a href="${verificationlink}">click here</a> to verify your account.</p>
+        <p>Thank you!</p>
+      `,
+    }
+
+    await transporter.sendMail(mailoptions);
+
     const newUser = await prisma.user.create({
       data: {
         email: email,
@@ -50,34 +82,11 @@ export const RegisterService = async (fullname: string, email: string, password:
       select: { email: true, fullname: true, id: true },
     });
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAILSENDER,
-        pass: process.env.EMAILSENDERPASS
-      }
-    })
-
-    const verificationlink: string = `http://localhost:3000/verifyaccount?token=${verifycode}&user=${newUser.id}`;
-
-    const mailoptions: object = {
-      from: process.env.EMAILSENDER,
-      to: newUser.email,
-      subject: 'Verify your email please !',
-      html: `
-        <p>Hello ${newUser.fullname},</p>
-        <p>Welcome to our website!</p>
-        <p>Please <a href="${verificationlink}">click here</a> to verify your account.</p>
-        <p>Thank you!</p>
-      `,
-    }
-
-    await transporter.sendMail(mailoptions);
-
     return "Great! we sent a link to your email address, please click on it to verify your account.";
 
   } catch (err: any) {
     const error: ErrorType = { error: err.message };
+    console.log(error);
     return error;
   }
 
