@@ -16,7 +16,8 @@ app.get("/", (req: Request, res: Response): void => {
 app.use(express.json());
 app.use("/api/auth/", AuthRouter);
 
-let deletejob = schedule.scheduleJob('0 5 * * *', async () => {
+// Schedule for deleting users that didn't verify their account with magic link until end of the day
+let deletejob = schedule.scheduleJob('0 5 * * *', async () => { 
   try {
     
     console.log("Starting the job < deleting non-verified users > ")
