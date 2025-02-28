@@ -16,4 +16,5 @@ model User {
   verify_code String @unique
   created_at String
   updated_at String
+  verified_at String?
 }

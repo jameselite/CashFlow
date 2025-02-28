@@ -7,8 +7,6 @@ export const RegisterController = async (req: Request, res: Response): Promise<v
         const { fullname, email, password } = req.body;
 
         const user : string = await RegisterService(fullname, email, password);
-
-        console.log(user);
         
         res.status(201).json({ message: user });
     } catch (err: any) {

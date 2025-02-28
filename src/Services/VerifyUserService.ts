@@ -1,4 +1,5 @@
 import prisma from "../../prisma/PrismaClient";
+import { NowTime } from "../Utils/NowTime";
 
 export const VerifyUserService = async (token: string, email: string): Promise<string> => {
     
@@ -11,7 +12,7 @@ export const VerifyUserService = async (token: string, email: string): Promise<s
 
         if(findUser.verify_code !== token) throw new Error("Validation failed.");
 
-        await prisma.user.update({ where: { email: email }, data: { verifyed: true } });
+        await prisma.user.update({ where: { email: email }, data: { verifyed: true, verified_at: NowTime.justNow() } });
 
         return "User verifyed successfully.";
     } catch (err: any) {
