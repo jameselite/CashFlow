@@ -1,4 +1,4 @@
-import { RegisterService } from "../Services/AddUserService";
+import { RegisterService } from "../../Services/Auth/AddUserService";
 import type { Request, Response } from "express";
 
 export const RegisterController = async (req: Request, res: Response): Promise<void> => {

@@ -3,7 +3,7 @@ import type { Request, Response, Express } from "express";
 import dotenv from "dotenv";
 import AuthRouter from "./src/Routes/AuthRoutes.ts";
 import schedule from "node-schedule";
-import { DeleteNotVerifyed } from "./src/Services/DeleteNotVerifyed.ts";
+import { DeleteNotVerifyed } from "./src/Services/Auth/DeleteNotVerifyed.ts";
 import cors from "cors";
 
 dotenv.config();

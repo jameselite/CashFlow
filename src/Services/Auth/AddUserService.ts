@@ -3,12 +3,12 @@
  and the catch block throws the error to controller's catch block.
 */
 
-import prisma from "../../prisma/PrismaClient";
-import { Validation } from "../Utils/ValidateUser";
+import prisma from "../../../prisma/PrismaClient";
+import { Validation } from "../../Utils/ValidateUser";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { v4 as uuid4 } from "uuid";
-import { NowTime } from "../Utils/NowTime";
+import { NowTime } from "../../Utils/NowTime";
 
 export type User = {
   email: string;

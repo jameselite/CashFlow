@@ -1,4 +1,4 @@
-import { LoginUserService } from "../Services/LoginUserService";
+import { LoginUserService } from "../../Services/Auth/LoginUserService";
 import type { Request, Response } from "express";
 
 export const LoginController = async (req:Request, res:Response) => {

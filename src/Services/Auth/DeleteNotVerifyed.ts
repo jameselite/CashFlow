@@ -1,5 +1,6 @@
-import prisma from "../../prisma/PrismaClient";
-import { NowTime } from "../Utils/NowTime";
+// service for deleting non-verified users after end of the day in 5 am.
+import prisma from "../../../prisma/PrismaClient";
+import { NowTime } from "../../Utils/NowTime";
 
 export const DeleteNotVerifyed = async (): Promise<void> => {
     try {

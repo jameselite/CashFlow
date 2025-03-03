@@ -2,9 +2,9 @@
 This service is a GET endpoint that verify users when they click on magic link sent to their email.
 */
 
-import prisma from "../../prisma/PrismaClient";
-import { NowTime } from "../Utils/NowTime";
-import { GeneratingJWT, type Tokens } from "../Utils/GeneratingJWT";
+import prisma from "../../../prisma/PrismaClient";
+import { NowTime } from "../../Utils/NowTime";
+import { GeneratingJWT, type Tokens } from "../../Utils/GeneratingJWT";
 
 //Return type of this function is object, so we can send more stuff into controller if we want.
 export const VerifyUserService = async (token: string, email: string): Promise<object> => {
@@ -21,7 +21,7 @@ export const VerifyUserService = async (token: string, email: string): Promise<o
 
         await prisma.user.update({ where: { email: email }, data: { verifyed: true, verified_at: NowTime.justNow() } });
         
-        const bothTokens: Tokens = await GeneratingJWT(findUser.email, findUser.id, false);
+        const bothTokens: Tokens = await GeneratingJWT(findUser.email, findUser.id, false); // function to generate jwt.
 
         return { message: "Verification was successfull", accessToken: bothTokens.accessToken, refreshToken: bothTokens.refreshToken };
 

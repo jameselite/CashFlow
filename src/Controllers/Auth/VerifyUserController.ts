@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import { VerifyUserService } from "../Services/VerifyUserService";
-import type { Tokens } from "../Utils/GeneratingJWT";
+import { VerifyUserService } from "../../Services/Auth/VerifyUserService";
+import type { Tokens } from "../../Utils/GeneratingJWT";
 
 export const VerifyUserController = async (req: Request, res: Response): Promise<void> => {
 
