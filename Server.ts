@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import AuthRouter from "./src/Routes/AuthRoutes.ts";
 import schedule from "node-schedule";
 import { DeleteNotVerifyed } from "./src/Services/DeleteNotVerifyed.ts";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,6 +15,12 @@ app.get("/", (req: Request, res: Response): void => {
 });
 
 app.use(express.json());
+app.use(cors({
+  origin: "*",
+  methods: "GET, POST, PUT, DELETE, OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
+  credentials: true
+}));
 app.use("/api/auth/", AuthRouter);
 
 // Schedule for deleting users that didn't verify their account with magic link until end of the day
