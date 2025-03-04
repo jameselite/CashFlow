@@ -8,13 +8,64 @@ datasource db {
 }
 
 model User {
-  id       Int    @default(autoincrement())
+  id       Int    @default(autoincrement()) @unique
   email    String @unique
   fullname String
   password String
+  phone Int @unique
   verifyed Boolean @default(false)
   verify_code String @unique
   created_at String
   updated_at String
   verified_at String?
+  houses House[]
+  requestes Requestes[]
+  favorites Favorite[]
+}
+
+model House {
+  id Int @default(autoincrement()) @unique
+  name String
+  slug String @unique
+  price Int?
+  pricetype String?
+  pictures String[]
+  floor Int
+  elevator Boolean
+  room Int
+  parking Boolean
+  meter Int
+  balkony Boolean
+  address String
+  author User @relation(fields: [authorid], references: [id])
+  authorid Int 
+  category Category @relation(fields: [categoryid], references: [id])
+  categoryid Int
+  requestes Requestes[]
+  favorites Favorite[]
+  @@index([slug])
+}
+
+model Category {
+  id Int @default(autoincrement()) @unique
+  name String
+  slug String @unique
+  houses House[]
+}
+
+model Requestes {
+  id Int @default(autoincrement()) @unique
+  author User @relation(fields: [authorid], references: [id])
+  authorid Int
+  house House @relation(fields: [houseid], references: [id])
+  houseid Int
+  accepted Boolean
+}
+
+model Favorite {
+  id Int @default(autoincrement()) @unique
+  author User @relation(fields: [authorid], references: [id])
+  authorid Int
+  house House @relation(fields: [houseid], references: [id])
+  houseid Int @unique
 }
