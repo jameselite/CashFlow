@@ -7,6 +7,7 @@ dotenv.config();
 export interface TheUser {
     id: string;
     email: string;
+    isadmin: boolean;
 }
 
 export const AuthCheck = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -20,10 +21,10 @@ export const AuthCheck = async (req: Request, res: Response, next: NextFunction)
 
         jwt.verify(accessToken, process.env.JWT_ACCESS!, (err, user) => {
             if(err) throw new Error("Token is invalid.");
-            req.user = user;
+            req.user = user as TheUser;
             next();
         })
-        
+
     } catch (err: any) {
         res.status(500).json({ error: err.message, success: false })
     }

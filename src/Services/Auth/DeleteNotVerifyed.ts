@@ -1,4 +1,5 @@
 // service for deleting non-verified users after end of the day in 5 am.
+
 import prisma from "../../../prisma/PrismaClient";
 import { NowTime } from "../../Utils/NowTime";
 
