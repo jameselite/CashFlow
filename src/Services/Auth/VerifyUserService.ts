@@ -5,6 +5,7 @@ This service is a GET endpoint that verify users when they click on magic link s
 import prisma from "../../../prisma/PrismaClient";
 import { NowTime } from "../../Utils/NowTime";
 import { GeneratingJWT, type Tokens } from "../../Utils/GeneratingJWT";
+import type { User } from "@prisma/client";
 
 //Return type of this function is object, so we can send more stuff into controller if we want.
 export const VerifyUserService = async (token: string, email: string): Promise<object> => {
@@ -14,7 +15,7 @@ export const VerifyUserService = async (token: string, email: string): Promise<o
         if (!token || !email) throw new Error("Requested data can not be empty.");
         // Token is UUID generated from AddUserSevice
 
-        const findUser = await prisma.user.findUnique({ where: { email: email }});
+        const findUser: User | null = await prisma.user.findUnique({ where: { email: email }});
         if(!findUser) throw new Error("User not found.");
 
         if(findUser.verify_code !== token) throw new Error("Validation failed.");

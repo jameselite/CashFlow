@@ -1,8 +1,8 @@
 export class Validation {
 
-  public static ValidateUser(fullname: string, email: string, password: string): void {
+  public static ValidateUser(fullname: string, email: string, password: string, phone: string): void {
 
-    if(!email || !fullname || !password) {
+    if(!email || !fullname || !password || !phone) {
       throw new Error("Requested data can not be empty.");
     }
 

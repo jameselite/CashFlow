@@ -9,19 +9,14 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { v4 as uuid4 } from "uuid";
 import { NowTime } from "../../Utils/NowTime";
+import type { User } from "@prisma/client";
 
-export type User = {
-  email: string;
-  fullname: string;
-  id: number;
-};
-
-export const RegisterService = async (fullname: string, email: string, password: string): Promise<string> => {
+export const RegisterService = async (fullname: string, email: string, password: string, phone: string): Promise<string> => {
 
   try {
-    Validation.ValidateUser(fullname, email, password);
+    Validation.ValidateUser(fullname, email, password, phone);
 
-    const isUserExist = await prisma.user.findUnique({
+    const isUserExist: User | null = await prisma.user.findUnique({
       where: { email: email },
     });
 
@@ -29,7 +24,7 @@ export const RegisterService = async (fullname: string, email: string, password:
 
     const verifycode: string = uuid4();
 
-    const iscodeunique = await prisma.user.findUnique({
+    const iscodeunique: User | null = await prisma.user.findUnique({
       where: { verify_code: verifycode },
     }); // in here we check if a user have the same verify code, the possibility is very low but still not zero
 
@@ -69,10 +64,11 @@ export const RegisterService = async (fullname: string, email: string, password:
 
     await transporter.sendMail(mailoptions);
 
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: email,
         fullname: fullname,
+        phone: phone,
         password: hashedPassword,
         verifyed: false,
         created_at: NowTime.justNow(),
